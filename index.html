@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>分帳小幫手</title>
+  <script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
+</head>
+<body>
+  <h2>分帳小幫手</h2>
+  <p id="welcome">登入中...</p>
+
+  <form id="splitForm">
+    <label>總金額：</label>
+    <input type="number" id="total" required><br><br>
+    <label>人數：</label>
+    <input type="number" id="people" required><br><br>
+    <button type="submit">計算</button>
+  </form>
+
+  <h3 id="result"></h3>
+
+  <script>
+    async function main() {
+      await liff.init({ liffId: "你建立的LIFF ID" });
+      if (!liff.isLoggedIn()) {
+        liff.login();
+      }
+      const profile = await liff.getProfile();
+      document.getElementById("welcome").innerText = `嗨 ${profile.displayName}，一起來分帳吧！`;
+    }
+    main();
+
+    document.getElementById("splitForm").onsubmit = function(e) {
+      e.preventDefault();
+      const total = document.getElementById("total").value;
+      const people = document.getElementById("people").value;
+      const perPerson = (total / people).toFixed(2);
+      document.getElementById("result"
